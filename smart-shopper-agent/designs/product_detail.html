@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ShopWise AI - MacBook Air M3 Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9ff",
+                    "secondary-container": "#8a4cfc",
+                    "on-surface": "#0d1c2e",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#d2bbff",
+                    "on-surface-variant": "#474651",
+                    "primary-fixed": "#e2dfff",
+                    "primary-container": "#312e81",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-background": "#0d1c2e",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-primary-fixed": "#100563",
+                    "tertiary-container": "#373a3c",
+                    "on-primary-container": "#9c9af4",
+                    "inverse-primary": "#c3c0ff",
+                    "on-secondary-fixed-variant": "#5a00c6",
+                    "surface-dim": "#ccdbf3",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#d5e3fc",
+                    "on-secondary-fixed": "#25005a",
+                    "inverse-on-surface": "#eaf1ff",
+                    "inverse-surface": "#233144",
+                    "surface-tint": "#5654a8",
+                    "on-secondary-container": "#fffbff",
+                    "background": "#f8f9ff",
+                    "on-tertiary-container": "#a1a4a6",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "surface-container-high": "#dce9ff",
+                    "primary": "#1a146b",
+                    "tertiary": "#212526",
+                    "secondary-fixed": "#eaddff",
+                    "outline": "#777682",
+                    "surface-container": "#e6eeff",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#d5e3fc",
+                    "secondary": "#712ae2",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-fixed-variant": "#3e3c8f",
+                    "outline-variant": "#c8c5d3",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#c3c0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "stack-xl": "40px",
+                    "stack-md": "16px",
+                    "margin-desktop": "32px",
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "stack-xs": "4px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "price-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "price-lg": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(200, 197, 211, 0.3);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(113, 42, 226, 0.15);
+        }
+        .chart-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s ease-in-out forwards;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+        .floating-chat {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .floating-chat:hover {
+            transform: translateY(-8px) scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-md bg-surface/80 border-b border-outline-variant/10 shadow-sm h-16 flex justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto left-0 right-0">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg-mobile tracking-tight text-primary">ShopWise AI</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-primary font-bold font-label-caps text-label-caps" href="#">Search</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-caps text-label-caps" href="#">Comparison</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-caps text-label-caps" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-caps text-label-caps" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Hero Section: Product Overview -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Product Images (Bento Style) -->
+<div class="lg:col-span-7 grid grid-cols-2 grid-rows-2 gap-4 h-[500px]">
+<div class="col-span-2 row-span-2 rounded-xl overflow-hidden glass-card relative group">
+<img alt="MacBook Air M3 Hero" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A sleek MacBook Air M3 resting on a minimalist oak desk in a bright, modern studio. The lighting is soft and natural, emphasizing the metallic finish and ultra-thin profile of the laptop. The overall aesthetic is clean, high-tech, and professional, following a light-mode palette with deep indigo accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYI4k-IquCvteTviQAle4mYRR4yzHbbs__3_DzgKhICbS7SIxBfCJ_W5mwse7Smfec9NwKcwM2QFCScdcsIYXqhr8ac6DZxF9KI3MiXRehLpS0jjrqoxoLGH0EHx2Pv0dE1QjqDBnG8Ss1dumg6FqUPc07HLGgobgtaB9Hs8T4HOxa1VVOhV89SRLXDy1WMm5XetC2wjOhMdZJj-10tds43ePn-28tF8tDDQOVhSxY6PTP8JtvY2IDI-LXriR6KgoQZeOdm1pBg_s"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white font-label-caps text-label-caps px-3 py-1 rounded-full">New M3 Chip</span>
+</div>
+</div>
+</div>
+<!-- Product Identity & Price Summary -->
+<div class="lg:col-span-5 flex flex-col justify-center">
+<nav class="flex gap-2 text-on-surface-variant font-label-caps text-label-caps mb-4">
+<span>Laptops</span> / <span>Apple</span> / <span>MacBook Air</span>
+</nav>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">MacBook Air 13" (M3, 2024)</h1>
+<p class="text-on-surface-variant mb-6 font-body-md">Starlight, 8-Core CPU, 10-Core GPU, 16GB Unified Memory, 512GB SSD Storage.</p>
+<div class="flex items-baseline gap-4 mb-8">
+<span class="font-price-lg text-4xl text-on-surface">$1,299.00</span>
+<span class="text-on-surface-variant line-through font-body-sm">$1,499.00</span>
+<span class="text-secondary font-bold font-label-caps text-label-caps">13% OFF</span>
+</div>
+<div class="flex flex-col gap-4">
+<button class="bg-primary text-white h-14 rounded-lg font-bold hover:bg-secondary-container transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+                        View Best Price at Amazon
+                    </button>
+<button class="bg-gradient-to-r from-primary to-secondary text-white h-14 rounded-lg font-bold hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2 ai-glow">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+                        Generate Custom Comparison
+                    </button>
+</div>
+</div>
+</section>
+<!-- AI Analysis Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+<!-- 1. AI Review Summary -->
+<div class="lg:col-span-2 glass-card rounded-xl p-6 ai-glow border-secondary/20">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary" data-icon="psychology">psychology</span>
+<h2 class="font-headline-md text-primary">AI Review Synthesis</h2>
+</div>
+<div class="grid md:grid-cols-2 gap-8">
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> The Strengths
+                        </h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="check_circle">check_circle</span>
+<p class="text-body-sm text-on-surface">The M3 chip offers exceptional performance for multi-tasking and light creative work.</p>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="check_circle">check_circle</span>
+<p class="text-body-sm text-on-surface">Dual external display support (with lid closed) solves a major user pain point.</p>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="check_circle">check_circle</span>
+<p class="text-body-sm text-on-surface">Industry-leading battery life lasting up to 18 hours on a single charge.</p>
+</li>
+</ul>
+</div>
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-outline"></span> The Trade-offs
+                        </h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="cancel">cancel</span>
+<p class="text-body-sm text-on-surface">Base model still starts with 8GB RAM, which may feel sluggish for power users.</p>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="cancel">cancel</span>
+<p class="text-body-sm text-on-surface">The 60Hz display lacks the smoothness found in Pro models.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="mt-8 pt-4 border-t border-outline-variant/20">
+<p class="font-label-caps text-[10px] text-on-surface-variant">SOURCES CRAWLED: THE VERGE, WIRED, CNET, REDDIT R/APPLE, APPLE OFFICIAL SPECS.</p>
+</div>
+</div>
+<!-- 2. Why ShopWise Recommends -->
+<div class="bg-primary text-white rounded-xl p-6 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="stars">stars</span>
+<h2 class="font-headline-md">Personal Fit</h2>
+</div>
+<p class="font-body-md mb-6 leading-relaxed">Based on your browsing history for <span class="text-secondary-fixed-dim font-bold">productivity tools</span> and <span class="text-secondary-fixed-dim font-bold">travel accessories</span>, we recommend this for your mobile workstation setup.</p>
+<div class="bg-white/10 rounded-lg p-4 mb-4">
+<p class="font-label-caps text-label-caps mb-2 text-primary-fixed">SENTIMENT ANALYSIS</p>
+<div class="flex items-center gap-2">
+<div class="h-2 w-full bg-white/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[94%]"></div>
+</div>
+<span class="font-bold">94%</span>
+</div>
+<p class="text-[11px] mt-1 text-primary-fixed/80">Positive community reception for durability.</p>
+</div>
+</div>
+<button class="w-full bg-white text-primary font-bold py-3 rounded-lg hover:bg-primary-fixed transition-colors">See Why it fits you</button>
+</div>
+<!-- 3. Price History Chart -->
+<div class="lg:col-span-3 glass-card rounded-xl p-6">
+<div class="flex justify-between items-center mb-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="trending_down">trending_down</span>
+<h2 class="font-headline-md text-primary">Price Analytics</h2>
+</div>
+<div class="flex gap-4">
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-caps text-label-caps">30 Days</span>
+<span class="bg-primary text-white px-3 py-1 rounded-full font-label-caps text-label-caps cursor-pointer">90 Days</span>
+<span class="bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-caps text-label-caps">1 Year</span>
+</div>
+</div>
+<div class="relative h-[300px] w-full">
+<svg class="w-full h-full preserve-3d" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#8a4cfc" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#8a4cfc" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="#c8c5d3" stroke-dasharray="5,5" stroke-width="0.5" x1="0" x2="1000" y1="50" y2="50"></line>
+<line stroke="#c8c5d3" stroke-dasharray="5,5" stroke-width="0.5" x1="0" x2="1000" y1="150" y2="150"></line>
+<line stroke="#c8c5d3" stroke-dasharray="5,5" stroke-width="0.5" x1="0" x2="1000" y1="250" y2="250"></line>
+<!-- Area Fill -->
+<path d="M0,50 L150,80 L300,60 L450,150 L600,140 L750,220 L900,210 L1000,210 L1000,300 L0,300 Z" fill="url(#gradient)"></path>
+<!-- Price Line -->
+<path class="chart-path" d="M0,50 L150,80 L300,60 L450,150 L600,140 L750,220 L900,210 L1000,210" fill="none" stroke="#712ae2" stroke-width="3"></path>
+<!-- Current Price Marker -->
+<circle class="animate-pulse" cx="1000" cy="210" fill="#712ae2" r="6"></circle>
+<text fill="#1a146b" font-family="Inter" font-size="14" font-weight="bold" x="940" y="200">$1,299</text>
+</svg>
+<div class="absolute bottom-0 left-0 w-full flex justify-between font-label-caps text-[10px] text-on-surface-variant pt-2">
+<span>JAN 01</span>
+<span>FEB 01</span>
+<span>MAR 01</span>
+<span>APR 01</span>
+<span>MAY 01</span>
+<span>JUN 01</span>
+<span>TODAY</span>
+</div>
+</div>
+<div class="mt-8 flex gap-8 items-center bg-surface-container-low p-4 rounded-lg">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">30-DAY LOW</span>
+<span class="font-price-lg text-primary">$1,249</span>
+</div>
+<div class="w-px h-8 bg-outline-variant/30"></div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PREDICTED NEXT DROP</span>
+<span class="font-price-lg text-secondary">July 15 (Prime Day)</span>
+</div>
+<div class="ml-auto">
+<div class="flex items-center gap-2 text-error font-bold">
+<span class="material-symbols-outlined" data-icon="notification_important">notification_important</span>
+<span class="font-label-caps text-label-caps">Price may rise soon</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Details Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="glass-card rounded-xl p-8">
+<h3 class="font-headline-md text-primary mb-6">Technical Specifications</h3>
+<div class="space-y-4">
+<div class="flex justify-between py-3 border-b border-outline-variant/10">
+<span class="text-on-surface-variant font-label-caps text-label-caps">PROCESSOR</span>
+<span class="text-on-surface font-bold">Apple M3 chip (8-core CPU)</span>
+</div>
+<div class="flex justify-between py-3 border-b border-outline-variant/10">
+<span class="text-on-surface-variant font-label-caps text-label-caps">DISPLAY</span>
+<span class="text-on-surface font-bold">13.6" Liquid Retina (2560x1664)</span>
+</div>
+<div class="flex justify-between py-3 border-b border-outline-variant/10">
+<span class="text-on-surface-variant font-label-caps text-label-caps">WEIGHT</span>
+<span class="text-on-surface font-bold">2.7 pounds (1.24 kg)</span>
+</div>
+<div class="flex justify-between py-3 border-b border-outline-variant/10">
+<span class="text-on-surface-variant font-label-caps text-label-caps">PORTS</span>
+<span class="text-on-surface font-bold">MagSafe 3, 2x Thunderbolt, Jack</span>
+</div>
+</div>
+</div>
+<div class="rounded-xl overflow-hidden glass-card relative min-h-[300px]">
+<img alt="MacBook Details" class="w-full h-full object-cover" data-alt="A detailed close-up of the MacBook Air M3 keyboard and trackpad, showcasing the premium aluminum texture and the crisp backlighting of the keys. The image uses a shallow depth of field, with soft purple and indigo ambient light reflecting off the metallic surface to reinforce the ShopWise AI brand identity. Elegant and minimal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTgNrqVe40GbHd3ydqCOwEH2aPYyrGQJ5L6LtUv39T4eRcBO12flbvmy23UK6W3Y8KcTHsfnIs-xitaRWt-wrcA26SqnlMKRiXp7Kb7TmC80mK9VmP7NilGKHiqzVNRaN7iO7cDAkrmDl8Flzp-RU8NpkDgnC5U1i7KhlVthNZmj30_ueso2i6j09YOsnuZZwbZ_oWcN7Jb8sjq12EO7Ix76pAd3dSzVWJ5Uy2twGyOWK42FOoLWL8iW9QeqzBW_WGvc0ZjEdQX7A"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end p-8">
+<p class="text-white font-headline-md italic">"The gold standard for ultraportable laptops in 2024."</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating AI Chatbot -->
+<div class="fixed bottom-24 right-8 z-[60] group" id="ai-chat-trigger">
+<div class="floating-chat w-16 h-16 bg-gradient-to-tr from-primary to-secondary rounded-full flex items-center justify-center cursor-pointer shadow-xl ai-glow text-white relative">
+<span class="material-symbols-outlined text-3xl" data-icon="chat_bubble">chat_bubble</span>
+<!-- Tooltip -->
+<div class="absolute right-20 bg-white text-primary font-bold px-4 py-2 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                Ask about MacBook M3
+            </div>
+</div>
+</div>
+<!-- Mini Chat Window (Hidden by default) -->
+<div class="fixed bottom-24 right-8 w-[380px] h-[500px] bg-white rounded-2xl shadow-2xl z-[70] hidden flex-col overflow-hidden border border-outline-variant/20" id="ai-chat-window">
+<div class="bg-primary p-4 flex justify-between items-center text-white">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="font-bold text-sm">ShopWise Assistant</p>
+<p class="text-[10px] text-primary-fixed/60">Analyzing MacBook Air M3...</p>
+</div>
+</div>
+<button class="hover:bg-white/10 p-1 rounded-full" onclick="toggleChat()"><span class="material-symbols-outlined" data-icon="close">close</span></button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-surface">
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container shrink-0 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xs" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="bg-white p-3 rounded-2xl rounded-tl-none border border-outline-variant/10 shadow-sm text-sm">
+                    Hi! I've analyzed 450+ reviews for this MacBook. What would you like to know about its performance or portability?
+                </div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="bg-primary text-white p-3 rounded-2xl rounded-tr-none shadow-sm text-sm max-w-[80%]">
+                    Is the 8GB RAM enough for video editing?
+                </div>
+</div>
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container shrink-0 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xs" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="bg-white p-3 rounded-2xl rounded-tl-none border border-outline-variant/10 shadow-sm text-sm">
+                    For 4K video editing, 8GB will struggle with long timelines. I suggest the 16GB upgrade if you use Final Cut Pro or Premiere regularly.
+                </div>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20 bg-white">
+<div class="flex items-center gap-2 bg-surface-container rounded-full px-4 py-2">
+<input class="bg-transparent border-none focus:ring-0 flex-1 text-sm" placeholder="Ask something..." type="text"/>
+<button class="text-primary"><span class="material-symbols-outlined" data-icon="send">send</span></button>
+</div>
+</div>
+</div>
+<!-- Mobile Bottom Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-2 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 z-50 rounded-t-xl shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span>Search</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+<span>Compare</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 font-label-caps text-label-caps">
+<span class="material-symbols-outlined" data-icon="psychology" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span>Analysis</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span>Reports</span>
+</div>
+</nav>
+<script>
+        const chatTrigger = document.getElementById('ai-chat-trigger');
+        const chatWindow = document.getElementById('ai-chat-window');
+
+        function toggleChat() {
+            chatWindow.classList.toggle('hidden');
+            chatTrigger.classList.toggle('hidden');
+        }
+
+        chatTrigger.addEventListener('click', toggleChat);
+        
+        // Simple entry animation for cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body></html>

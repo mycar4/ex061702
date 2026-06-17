@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ShopWise AI | Search Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c8c5d3; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f8f9ff",
+                        "secondary-container": "#8a4cfc",
+                        "on-surface": "#0d1c2e",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "on-surface-variant": "#474651",
+                        "primary-fixed": "#e2dfff",
+                        "primary-container": "#312e81",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-background": "#0d1c2e",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-primary-fixed": "#100563",
+                        "tertiary-container": "#373a3c",
+                        "on-primary-container": "#9c9af4",
+                        "inverse-primary": "#c3c0ff",
+                        "on-secondary-fixed-variant": "#5a00c6",
+                        "surface-dim": "#ccdbf3",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-secondary-fixed": "#25005a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "inverse-surface": "#233144",
+                        "surface-tint": "#5654a8",
+                        "on-secondary-container": "#fffbff",
+                        "background": "#f8f9ff",
+                        "on-tertiary-container": "#a1a4a6",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "surface-container-high": "#dce9ff",
+                        "primary": "#1a146b",
+                        "tertiary": "#212526",
+                        "secondary-fixed": "#eaddff",
+                        "outline": "#777682",
+                        "surface-container": "#e6eeff",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#d5e3fc",
+                        "secondary": "#712ae2",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "on-primary-fixed-variant": "#3e3c8f",
+                        "outline-variant": "#c8c5d3",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#c3c0ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "stack-xl": "40px",
+                        "stack-md": "16px",
+                        "margin-desktop": "32px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "stack-xs": "4px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "price-lg": ["Inter"],
+                        "display-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "price-lg": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-md bg-surface/80 dark:bg-surface/80 border-b border-outline-variant/10 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg-mobile tracking-tight text-primary dark:text-primary-fixed">ShopWise AI</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-primary font-bold font-label-caps text-label-caps" href="#">Search</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-caps text-label-caps" href="#">Comparison</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-caps text-label-caps" href="#">Analysis</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-caps text-label-caps" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-2 border border-outline-variant/20 focus-within:ring-2 focus-within:ring-secondary/50 transition-all">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm px-2 w-64 text-on-surface" placeholder="high-performance laptops" type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary active:scale-95 duration-200"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary active:scale-95 duration-200"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Sidebar Filters -->
+<aside class="w-full md:w-72 shrink-0 space-y-stack-md">
+<div class="glass-card border border-outline-variant/20 rounded-xl p-6 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Filters</h2>
+<button class="text-label-caps font-label-caps text-secondary">Clear All</button>
+</div>
+<!-- Price Range -->
+<div class="mb-8">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase tracking-wider">Price Range</label>
+<div class="space-y-4">
+<input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary" type="range"/>
+<div class="flex justify-between text-body-sm font-body-sm text-outline">
+<span>$800</span>
+<span>$4,000+</span>
+</div>
+</div>
+</div>
+<!-- Brand -->
+<div class="mb-8">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase tracking-wider">Brand</label>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded text-secondary focus:ring-secondary border-outline-variant" type="checkbox"/>
+<span class="text-body-md font-body-md group-hover:text-primary">Apple</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded text-secondary focus:ring-secondary border-outline-variant" type="checkbox"/>
+<span class="text-body-md font-body-md group-hover:text-primary">Dell XPS</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded text-secondary focus:ring-secondary border-outline-variant" type="checkbox"/>
+<span class="text-body-md font-body-md group-hover:text-primary">ASUS ROG</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded text-secondary focus:ring-secondary border-outline-variant" type="checkbox"/>
+<span class="text-body-md font-body-md group-hover:text-primary">Razer Blade</span>
+</label>
+</div>
+</div>
+<!-- Specs -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase tracking-wider">RAM</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-1.5 rounded-full border border-outline-variant text-body-sm font-body-sm hover:border-secondary hover:text-secondary transition-all">16GB</button>
+<button class="px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-body-sm font-body-sm">32GB</button>
+<button class="px-4 py-1.5 rounded-full border border-outline-variant text-body-sm font-body-sm hover:border-secondary hover:text-secondary transition-all">64GB</button>
+</div>
+</div>
+</div>
+<!-- AI Insight Sidebar -->
+<div class="bg-primary-container p-6 rounded-xl text-on-primary-container">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-on-primary-container">psychology</span>
+<span class="font-label-caps text-label-caps uppercase">AI Market Forecast</span>
+</div>
+<p class="text-body-sm font-body-sm mb-4 leading-relaxed">
+                        Prices for "High-Performance Laptops" are expected to drop by 8% next month due to new seasonal hardware refreshes. 
+                    </p>
+<button class="w-full py-2 bg-secondary text-white rounded-lg font-label-caps text-label-caps hover:bg-opacity-90 transition-all">Notify Price Drop</button>
+</div>
+</aside>
+<!-- Main Results Area -->
+<section class="flex-1">
+<!-- Sorting & Context -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Results for <span class="text-secondary italic">"high-performance laptops"</span></h1>
+<p class="text-body-sm font-body-sm text-outline">Analyzed 1,420+ listings from 12 major retailers.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-caps font-label-caps text-on-surface-variant">Sort by:</span>
+<select class="bg-surface-container border-none rounded-lg text-body-sm font-body-sm focus:ring-secondary py-1.5 pr-8">
+<option>AI Relevance</option>
+<option>Lowest Price</option>
+<option>Top Rated</option>
+</select>
+</div>
+</div>
+<!-- Product Listing -->
+<div class="space-y-stack-md">
+<!-- Product Card 1 -->
+<div class="glass-card border border-outline-variant/30 rounded-2xl p-6 hover:shadow-lg transition-all group overflow-hidden relative">
+<!-- AI Sentiment Badge -->
+<div class="absolute top-0 right-0 px-4 py-2 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps rounded-bl-2xl">
+                            AI Sentiment: 98% Positive
+                        </div>
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Image Column -->
+<div class="w-full lg:w-1/3">
+<div class="aspect-square rounded-xl bg-surface-container-low overflow-hidden">
+<img alt="Laptop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional high-end silver laptop presented on a clean, reflective white surface in a brightly lit studio. The lighting is soft and corporate, creating subtle shadows and highlights that emphasize the sleek, metallic texture of the chassis. The background is a minimalist, airy white, maintaining a modern and sophisticated aesthetic consistent with a premium tech product. The overall mood is precise and high-performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyxhzIJp2jAvOiL-V47TpsvxHcNr-7S_yUYj6Oh5DosaqEgT7f94_5bOmLOcK9CPqt-o2_lHkzNokR5yveQA_I7nX35OSdmbI4L4BCm0rduiqdUCKJAJc_Wx7sIcoEZ3_1fl-ux1LYy5ZxxbU9F39r86tzvIQLC9Bpt14QDKK9aCcfP_dGVdfmNVoORU3GvMog2kL0muWBSJ-hp-t-PEdEI9Oix_VBPitWeUOaQGQUKYzk8nnHQ4eSyv7Q_6MS8DxGRycdWNfRHbw"/>
+</div>
+</div>
+<!-- Content Column -->
+<div class="flex-1">
+<div class="mb-4">
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_down</span> LOWEST IN 30 DAYS
+                                        </span>
+<span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-bold rounded flex items-center gap-1 uppercase">
+<span class="material-symbols-outlined text-[14px]">verified</span> Best Value AI Choice
+                                        </span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2 group-hover:text-secondary transition-colors">MacBook Pro 14" (M3 Max, 36GB RAM, 1TB SSD)</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">The ultimate pro laptop. Unleash massive performance for demanding workflows with the M3 Max chip. 120Hz Liquid Retina XDR display.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+<!-- Pricing Logic -->
+<div class="space-y-4">
+<div>
+<span class="font-label-caps text-label-caps text-outline uppercase block mb-1">Best Current Price</span>
+<span class="font-price-lg text-price-lg text-primary">$3,199.00</span>
+</div>
+<!-- Comparison Rows -->
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<span class="text-body-sm font-body-sm font-semibold">Coupang</span>
+<div class="flex items-center gap-4">
+<span class="text-body-sm font-body-sm text-secondary font-bold">$3,199</span>
+<button class="bg-primary text-white px-3 py-1 rounded text-label-caps font-label-caps">Buy Now</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<span class="text-body-sm font-body-sm font-semibold">Naver Shopping</span>
+<div class="flex items-center gap-4">
+<span class="text-body-sm font-body-sm text-on-surface-variant">$3,245</span>
+<button class="border border-outline-variant text-on-surface-variant px-3 py-1 rounded text-label-caps font-label-caps">Visit</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart Placeholder Area -->
+<div class="bg-surface-container rounded-xl p-4 flex flex-col">
+<span class="font-label-caps text-label-caps text-outline uppercase mb-4">30-Day Price Trend</span>
+<div class="flex-1 flex items-end gap-1 px-2 relative min-h-[80px]">
+<!-- Simple CSS Bars to simulate a chart -->
+<div class="flex-1 bg-outline-variant/30 h-full rounded-t-sm"></div>
+<div class="flex-1 bg-outline-variant/30 h-[90%] rounded-t-sm"></div>
+<div class="flex-1 bg-outline-variant/30 h-[95%] rounded-t-sm"></div>
+<div class="flex-1 bg-outline-variant/30 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/40 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary h-[50%] rounded-t-sm relative">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-on-surface text-surface text-[10px] px-1 rounded">Today</div>
+</div>
+<!-- Axis Labels -->
+<div class="absolute bottom-0 left-0 w-full border-b border-outline-variant"></div>
+</div>
+<div class="mt-2 text-center">
+<span class="text-[10px] text-green-600 font-bold">12% drop detected today</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass-card border border-outline-variant/30 rounded-2xl p-6 hover:shadow-lg transition-all group">
+<div class="flex flex-col lg:flex-row gap-8">
+<div class="w-full lg:w-1/3">
+<div class="aspect-square rounded-xl bg-surface-container-low overflow-hidden">
+<img alt="Laptop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek black high-performance Windows laptop with a high-resolution screen showcasing vibrant abstract wallpapers. The laptop is set in a dark-mode inspired setup with moody, deep violet and blue ambient lighting. A few technical accessories like a designer mouse and noise-canceling headphones are subtly visible in the background, out of focus. The mood is tech-forward, powerful, and mysterious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA54BS-CrHcfW5EepKe-GIWudEpKagL3aQstusid9mo9kebAi3dOu8pP9_pxbe76SEOBQLil1KgX9HuRyv8zoWkJsB6SEq7pescEXCTeKy5CZ59qshRWXOvcpBZesj0LbL9EbPoDXRcSO5fP3fw0P1xM5Pf2Jt-dybXB2tXur_bssUVKHClGbZvG8DoFVfCxG2--zjsKRXXMVtEGhKM1x5lQpTXBgHBt9DoJf010MF1nqs7VrKb1SwBVSZvzABMlYh3Xtp6zhXkkdY"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="mb-4">
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> FASTEST SPECS
+                                        </span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2 group-hover:text-secondary transition-colors">Dell XPS 17 9730 (RTX 4070, 64GB RAM)</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">The pinnacle of laptop design. Features a stunning 17-inch InfinityEdge display and workstation-class components.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+<div class="space-y-4">
+<div>
+<span class="font-label-caps text-label-caps text-outline uppercase block mb-1">Best Current Price</span>
+<span class="font-price-lg text-price-lg text-primary">$2,849.99</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<span class="text-body-sm font-body-sm font-semibold">GMarket</span>
+<div class="flex items-center gap-4">
+<span class="text-body-sm font-body-sm text-secondary font-bold">$2,849</span>
+<button class="bg-primary text-white px-3 py-1 rounded text-label-caps font-label-caps">Buy Now</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-outline-variant/10">
+<span class="text-body-sm font-body-sm font-semibold">11st</span>
+<div class="flex items-center gap-4">
+<span class="text-body-sm font-body-sm text-on-surface-variant">$2,890</span>
+<button class="border border-outline-variant text-on-surface-variant px-3 py-1 rounded text-label-caps font-label-caps">Visit</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-4 flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-secondary text-4xl mb-2">analytics</span>
+<p class="text-body-sm font-body-sm font-semibold">Price Stability: HIGH</p>
+<p class="text-[10px] text-outline mt-1 italic">This model rarely goes on sale. Buy with confidence.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More / AI Suggestion -->
+<div class="mt-12 flex flex-col items-center">
+<button class="px-8 py-3 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all active:scale-95">Load 20 More Results</button>
+<div class="mt-8 p-6 bg-surface-container-high rounded-2xl max-w-2xl w-full border border-outline-variant/20 relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-secondary opacity-10 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex gap-4">
+<span class="material-symbols-outlined text-secondary text-3xl">auto_awesome</span>
+<div>
+<h4 class="font-label-caps text-label-caps text-primary uppercase mb-1">Not finding what you need?</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Ask me to compare specific specs, like "Which laptop has the best cooling for video editing?"</p>
+<div class="mt-4 flex gap-2">
+<input class="flex-1 bg-white border border-outline-variant rounded-lg px-4 py-2 text-body-sm" placeholder="Refine search with AI..." type="text"/>
+<button class="bg-secondary text-white px-4 py-2 rounded-lg font-label-caps text-label-caps">Ask AI</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-2 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-caps text-[10px] mt-0.5">Search</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span class="font-label-caps text-[10px] mt-0.5">Compare</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-[10px] mt-0.5">Analysis</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-caps text-[10px] mt-0.5">Reports</span>
+</button>
+</nav>
+<!-- FAB Contextual (Only for Search/Explore) -->
+<button class="fixed bottom-24 right-6 md:bottom-12 md:right-12 w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-secondary text-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-90 transition-transform z-40 group">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">bolt</span>
+<span class="absolute right-16 bg-on-surface text-surface px-3 py-1 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Generate Comparison Report</span>
+</button>
+<script>
+        // Micro-interaction: Active state logic for bottom nav
+        const bottomNavButtons = document.querySelectorAll('nav.md\\:hidden button');
+        bottomNavButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                bottomNavButtons.forEach(b => {
+                    b.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'rounded-full', 'px-4', 'py-1');
+                    b.classList.add('text-on-surface-variant');
+                });
+                btn.classList.add('bg-secondary-container', 'text-on-secondary-container', 'rounded-full', 'px-4', 'py-1');
+                btn.classList.remove('text-on-surface-variant');
+            });
+        });
+
+        // Search highlight interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('w-80');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('w-80');
+        });
+    </script>
+</body></html>

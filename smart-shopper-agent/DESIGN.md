@@ -1,46 +1,171 @@
-# [SSOT] Google Stitch 디자인 시스템 명세서
-
-본 문서는 `SmartShopper AI` 프로젝트의 전 영역(FO/BO)에 적용되는 디자인 토큰과 UI 컴포넌트 구현체 가이드라인입니다. 퍼블/개발 Gem은 본 명세의 토큰을 절대적으로 준수해야 합니다.
-
+---
+name: Cognitive Commerce
+colors:
+  surface: '#f8f9ff'
+  surface-dim: '#ccdbf3'
+  surface-bright: '#f8f9ff'
+  surface-container-lowest: '#ffffff'
+  surface-container-low: '#eff4ff'
+  surface-container: '#e6eeff'
+  surface-container-high: '#dce9ff'
+  surface-container-highest: '#d5e3fc'
+  on-surface: '#0d1c2e'
+  on-surface-variant: '#474651'
+  inverse-surface: '#233144'
+  inverse-on-surface: '#eaf1ff'
+  outline: '#777682'
+  outline-variant: '#c8c5d3'
+  surface-tint: '#5654a8'
+  primary: '#1a146b'
+  on-primary: '#ffffff'
+  primary-container: '#312e81'
+  on-primary-container: '#9c9af4'
+  inverse-primary: '#c3c0ff'
+  secondary: '#712ae2'
+  on-secondary: '#ffffff'
+  secondary-container: '#8a4cfc'
+  on-secondary-container: '#fffbff'
+  tertiary: '#212526'
+  on-tertiary: '#ffffff'
+  tertiary-container: '#373a3c'
+  on-tertiary-container: '#a1a4a6'
+  error: '#ba1a1a'
+  on-error: '#ffffff'
+  error-container: '#ffdad6'
+  on-error-container: '#93000a'
+  primary-fixed: '#e2dfff'
+  primary-fixed-dim: '#c3c0ff'
+  on-primary-fixed: '#100563'
+  on-primary-fixed-variant: '#3e3c8f'
+  secondary-fixed: '#eaddff'
+  secondary-fixed-dim: '#d2bbff'
+  on-secondary-fixed: '#25005a'
+  on-secondary-fixed-variant: '#5a00c6'
+  tertiary-fixed: '#e0e3e5'
+  tertiary-fixed-dim: '#c4c7c9'
+  on-tertiary-fixed: '#191c1e'
+  on-tertiary-fixed-variant: '#444749'
+  background: '#f8f9ff'
+  on-background: '#0d1c2e'
+  surface-variant: '#d5e3fc'
+typography:
+  display-lg:
+    fontFamily: Inter
+    fontSize: 48px
+    fontWeight: '700'
+    lineHeight: 56px
+    letterSpacing: -0.02em
+  display-lg-mobile:
+    fontFamily: Inter
+    fontSize: 32px
+    fontWeight: '700'
+    lineHeight: 40px
+    letterSpacing: -0.01em
+  headline-md:
+    fontFamily: Inter
+    fontSize: 24px
+    fontWeight: '600'
+    lineHeight: 32px
+  body-md:
+    fontFamily: Inter
+    fontSize: 16px
+    fontWeight: '400'
+    lineHeight: 24px
+  body-sm:
+    fontFamily: Inter
+    fontSize: 14px
+    fontWeight: '400'
+    lineHeight: 20px
+  label-caps:
+    fontFamily: Inter
+    fontSize: 12px
+    fontWeight: '600'
+    lineHeight: 16px
+    letterSpacing: 0.05em
+  price-lg:
+    fontFamily: Inter
+    fontSize: 20px
+    fontWeight: '700'
+    lineHeight: 28px
+rounded:
+  sm: 0.25rem
+  DEFAULT: 0.5rem
+  md: 0.75rem
+  lg: 1rem
+  xl: 1.5rem
+  full: 9999px
+spacing:
+  container-max: 1280px
+  gutter: 24px
+  margin-mobile: 16px
+  margin-desktop: 32px
+  stack-xs: 4px
+  stack-md: 16px
+  stack-xl: 40px
 ---
 
-## 1. 전역 디자인 토큰 (Global Design Tokens)
+## Brand & Style
 
-### 가. 컬러 시스템 (Color Palette)
-| 토큰명 | 색상 코드 (HEX) | 용도 |
-| :--- | :--- | :--- |
-| `--stitch-color-primary` | `#1E3A8A` | 메인 브랜드 컬러 (Deep Blue, 신뢰감 제공) |
-| `--stitch-color-secondary` | `#10B981` | 서브 컬러 (Emerald Green, 가격 메리트 및 이득 표시) |
-| `--stitch-color-accent` | `#EF4444` | 강조 컬러 (Red Orange, 핫딜, 마감 임박, 할인 정보) |
-| `--stitch-bg-main` | `#FFFFFF` | 메인 기본 배경색 |
-| `--stitch-bg-card` | `#F9FAFB` | 상품 피드 및 카드 컴포넌트 배경색 (Light Gray) |
-| `--stitch-border-default` | `#E5E7EB` | 기본 분리선 및 테두리 컬러 |
+The design system is anchored in a philosophy of **Intelligent Precision**. It targets savvy consumers who value efficiency and data-driven decision-making. The visual language blends **Modern Corporate** reliability with **Glassmorphism** accents to signify the "transparent" nature of the underlying AI logic.
 
-### 나. 타이포그래피 (Typography)
-- **Heading 1 (페이지 타이틀):** `font-size: 24px; font-weight: 700; line-height: 1.3;`
-- **Heading 2 (상품명, 섹션 타이틀):** `font-size: 18px; font-weight: 600; line-height: 1.4;`
-- **Body Text (리뷰, 리포트 본문):** `font-size: 14px; font-weight: 400; line-height: 1.6;`
-- **Caption (할인율, 날짜):** `font-size: 12px; font-weight: 500; color: #6B7280;`
+The emotional response should be one of quiet confidence—users should feel that the system is doing the heavy lifting of research and price analysis in the background. The aesthetic is clean and tech-forward, utilizing ample whitespace and refined, high-contrast typography to ensure that complex data remains digestible.
 
-### 다. 간격 및 둥글기 (Spacing & Radius)
-- **컴포넌트 내 패딩:** `padding: 16px (1rem)` 기본 지정
-- **카드 컴포넌트 둥글기:** `border-radius: 12px`
-- **검색 폼 / 버튼 둥글기:** `border-radius: 9999px` (Fully Rounded)
+## Colors
 
----
+The palette is dominated by **Deep Indigo** (`primary`) to establish authority and trust, while **Vibrant Violet** (`secondary`) is used sparingly for AI-driven features and interactive states. 
 
-## 2. 핵심 UI 컴포넌트 명세
+- **Price Logic**: Use `semantic_success` for discounts and "lowest price" indicators. Use `semantic_error` for price hikes or "out of stock" alerts.
+- **Surface Strategy**: The background uses `tertiary` (Soft Slate) to reduce eye strain, while AI response bubbles utilize a dedicated `ai_surface` tint to distinguish machine-generated content from product listings.
 
-### 가. AI 검색 바 (AI Search Bar)
-- **구조:** 인풋 필드 + 추천 아이콘 버튼
-- **스타일:** `border: 2px solid var(--stitch-border-default)`, 포커스 시 `border-color: var(--stitch-color-primary)`로 확장.
-- **둥글기:** 캡슐형(`9999px`) 구조 적용.
+## Typography
 
-### 나. 상품 추천 카드 (Product Card)
-- **구조:** 상품 이미지 + 상품명(H2) + 최저가/할인율 정보 + AI 리뷰 요약 배너
-- **스타일:** 배경은 `var(--stitch-bg-card)`, 테두리는 `var(--stitch-border-default)`.
-- **인터랙션:** 마우스 오버 시 `transform: translateY(-2px)`, 미세한 그림자 효과 추가.
+The design system exclusively utilizes **Inter** to ensure maximum legibility across dense data tables and chat interfaces. 
 
-### 다. AI 리뷰 뱃지 (Review Summary Badge)
-- 긍정적인 요약 요소는 배경 `#E6F4EA`, 글자색 `#137333` 적용.
-- 주의/부정적인 요약 요소는 배경 `#FCE8E6`, 글자색 `#C5221F` 적용.
+- **Hierarchy**: Use `display-lg` for primary hero sections. 
+- **Data Display**: Product prices should always use the `price-lg` token with a tabular-nums configuration to ensure vertical alignment in comparison lists.
+- **AI Feedback**: AI-generated responses utilize `body-md` with a slightly increased line-height (1.6) to improve reading speed for long-form summaries.
+
+## Layout & Spacing
+
+This design system uses a **Fluid Grid** with a 12-column structure for desktop and a 4-column structure for mobile. 
+
+- **Chat Interface**: The central AI assistant view is constrained to a max-width of 800px to maintain optimal line lengths.
+- **Product Grids**: Product comparison cards should follow a standard 4-column repeat on desktop, collapsing to 1-column on mobile.
+- **Rhythm**: All vertical spacing between elements must be a multiple of 4px.
+
+## Elevation & Depth
+
+The system uses **Tonal Layers** combined with **Ambient Shadows** to create a sense of organized hierarchy.
+
+1.  **Level 0 (Base)**: `tertiary` slate background.
+2.  **Level 1 (Cards)**: White background with a soft 4px blur, 5% opacity indigo shadow. Used for product listings.
+3.  **Level 2 (AI Bubbles)**: Elevated with a subtle `secondary` (Violet) glow to indicate active processing.
+4.  **Level 3 (Overlays/Modals)**: High-contrast white surfaces with 16px blur shadows and a 1px `neutral` border at 10% opacity.
+
+The interface should avoid heavy skeuomorphism, relying instead on 1px stroke borders to define boundaries between data segments.
+
+## Shapes
+
+The design system adopts a **Rounded** (8px) aesthetic. This strikes a balance between the technical rigidity of AI data and the approachability of a shopping assistant.
+
+- **Buttons & Inputs**: 8px (`rounded-md`).
+- **Product Cards**: 16px (`rounded-lg`) to create a softer container for product photography.
+- **AI Chat Bubbles**: 16px corner radius, except for the leading corner (the side closest to the avatar) which remains at 4px to create a \"speech\" tail effect.
+
+## Components
+
+### Buttons
+- **Primary**: Solid `primary_color`, white text, 8px radius.
+- **AI Action**: Gradient background (`primary` to `secondary`), used for \"Generate Comparison\" or \"Ask AI.\"
+
+### AI Response Bubbles
+Bubbles must feature a 1px border of `secondary_color` at 20% opacity. They should include a \"Sources\" footer at the bottom, listing the stores crawled (RAG sources) in `label-caps` typography.
+
+### Price Comparison Charts
+Charts should be minimal, using `semantic_success` for the area fill of price drops. Vertical axes should be hidden; only the current price and the 30-day low should be explicitly labeled.
+
+### Input Fields
+Search inputs should be oversized (height: 56px) with a soft shadow and a `secondary` focus ring. The placeholder text should cycle through AI-prompt suggestions like \"Find the best noise-canceling headphones under $200.\"
+
+### Product Cards
+Cards feature a top-aligned image, followed by a price row, then an \"AI Sentiment\" chip. The sentiment chip summarizes reviews (e.g., \"Highly Rated for Durability\") using a `primary` tint background.

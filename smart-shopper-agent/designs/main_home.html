@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ShopWise AI - Intelligent Shopping Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9ff",
+                    "secondary-container": "#8a4cfc",
+                    "on-surface": "#0d1c2e",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#d2bbff",
+                    "on-surface-variant": "#474651",
+                    "primary-fixed": "#e2dfff",
+                    "primary-container": "#312e81",
+                    "tertiary-fixed": "#e0e3e5",
+                    "on-background": "#0d1c2e",
+                    "on-tertiary-fixed": "#191c1e",
+                    "on-primary-fixed": "#100563",
+                    "tertiary-container": "#373a3c",
+                    "on-primary-container": "#9c9af4",
+                    "inverse-primary": "#c3c0ff",
+                    "on-secondary-fixed-variant": "#5a00c6",
+                    "surface-dim": "#ccdbf3",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#d5e3fc",
+                    "on-secondary-fixed": "#25005a",
+                    "inverse-on-surface": "#eaf1ff",
+                    "inverse-surface": "#233144",
+                    "surface-tint": "#5654a8",
+                    "on-secondary-container": "#fffbff",
+                    "background": "#f8f9ff",
+                    "on-tertiary-container": "#a1a4a6",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "surface-container-high": "#dce9ff",
+                    "primary": "#1a146b",
+                    "tertiary": "#212526",
+                    "secondary-fixed": "#eaddff",
+                    "outline": "#777682",
+                    "surface-container": "#e6eeff",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#d5e3fc",
+                    "secondary": "#712ae2",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary-fixed-variant": "#3e3c8f",
+                    "outline-variant": "#c8c5d3",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#c3c0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "stack-xl": "40px",
+                    "stack-md": "16px",
+                    "margin-desktop": "32px",
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "stack-xs": "4px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "price-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "price-lg": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(200, 197, 211, 0.3);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 0%, rgba(138, 76, 252, 0.08) 0%, rgba(248, 249, 255, 1) 70%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ai-pulse {
+            animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-surface/80 dark:bg-surface/80 border-b border-outline-variant/10 shadow-sm">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg-mobile tracking-tight text-primary dark:text-primary-fixed cursor-pointer">ShopWise AI</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="font-headline-md text-headline-md text-primary font-bold hover:text-secondary transition-colors duration-200" href="#">Home</a>
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Comparison</a>
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Analysis</a>
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Reports</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="active:scale-95 duration-200 p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">notifications</span>
+</button>
+<button class="active:scale-95 duration-200 p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="pt-24 pb-32 min-h-screen hero-gradient">
+<!-- Hero Search Section -->
+<section class="max-w-4xl mx-auto px-margin-mobile text-center mb-16">
+<div class="mb-6 flex items-center justify-center gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary ai-pulse"></div>
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">AI Agent Ready</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-8">
+                The future of shopping is <span class="text-secondary">Intelligent.</span>
+</h1>
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-20 group-focus-within:opacity-40 transition duration-1000"></div>
+<div class="relative flex items-center bg-white rounded-xl shadow-xl border border-outline-variant/30 overflow-hidden h-16 md:h-20 px-6">
+<span class="material-symbols-outlined text-outline text-3xl mr-4">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-body-md md:text-headline-md font-body-md placeholder:text-outline/60" placeholder="어떤 상품을 찾으시나요? (예: 성능 좋은 100만원대 노트북 추천해줘)" type="text"/>
+<button class="ml-4 bg-gradient-to-r from-primary to-secondary text-white px-6 md:px-8 py-3 rounded-lg font-bold hover:shadow-lg active:scale-95 transition-all">
+                        Ask AI
+                    </button>
+</div>
+</div>
+<div class="mt-6 flex flex-wrap justify-center gap-3">
+<span class="text-body-sm text-on-surface-variant">Try:</span>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/20 text-body-sm hover:border-secondary transition-colors hover:text-secondary">"Best OLED TV under $1.5k"</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/20 text-body-sm hover:border-secondary transition-colors hover:text-secondary">"Compare Dyson vs Samsung vacuums"</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/20 text-body-sm hover:border-secondary transition-colors hover:text-secondary">"Lowest price on iPhone 15 Pro"</button>
+</div>
+</section>
+<!-- Bento Grid: Trending & Categories -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Trending AI Deals (Large Area) -->
+<div class="md:col-span-8 space-y-gutter">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">auto_awesome</span>
+                        Trending AI Deals
+                    </h2>
+<a class="text-label-caps font-label-caps text-secondary hover:underline underline-offset-4" href="#">VIEW ALL DEALS</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<!-- Product Card 1 -->
+<div class="glass-card rounded-xl overflow-hidden group hover:shadow-xl transition-all duration-300">
+<div class="relative h-56 w-full overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A sleek, modern high-end laptop resting on a minimalist white desk in a bright, sunlit home office. The lighting is soft and airy, emphasizing a clean light-mode aesthetic with subtle indigo shadows. The overall mood is sophisticated and tech-forward, highlighting precision and professional-grade industrial design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvMoVZB2fIzu9N7ci0-KWUTJ12--rwCcnT_--SceTc10Tj9O8WOH2f7y-v_4DXg3ADlsgJRzkx6kpDXngo59L8tu7e0Y77l9dB3zNwgDwZjBBnPKBMTLM4nqCCrWOLffQcUk9TFyUgyRgz8S5Pr61Pv70uSk1f7Zmbqu-euUikoWMXl2kH5Lp-azEKVoEhj-F03erYNDmsrnarP0cdFcfFkr0sDxrGif26H7GqCTqez6nwsxVTi0kl8tvEbiXtbvvlN0dvB7zpl0w"/>
+<div class="absolute top-4 left-4 bg-secondary text-white px-3 py-1 rounded-full text-label-caps font-label-caps">24% OFF</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-body-md text-on-surface line-clamp-1">Premium Laptop 14" Pro</h3>
+<div class="flex items-center text-secondary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-caps ml-1">4.9</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="font-price-lg text-price-lg text-primary">₩1,450,000</span>
+<span class="text-body-sm text-outline line-through">₩1,890,000</span>
+</div>
+<div class="p-3 bg-secondary/5 rounded-lg border border-secondary/10">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-secondary text-base">psychology</span>
+<span class="text-label-caps text-secondary">AI SENTIMENT</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">"Unbeatable display quality at this price point. Historical low."</p>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass-card rounded-xl overflow-hidden group hover:shadow-xl transition-all duration-300">
+<div class="relative h-56 w-full overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Professional studio headphones sitting on a wooden stand in a dimly lit, high-tech music studio. The environment is clean and professional, with cool blue and violet ambient lighting reflecting off polished surfaces. The image captures the high-fidelity nature of the product within a modern, data-driven consumer context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIZ7DCCYqw4gMNKDNcgOnce8V175OPF2dhERU7l3IDLC36adb_8BVwiTDWmqo8Z--PIzE190oYW_ELMsuJsbNnc-G_8svCjmW9n3eLZkR7O3bkrYmeSiqmrgxH2CKeZD58MZWcJ7_o5iqNeank2aQseodAeGjA9ivottDVk6FLbvX3N1pO4OApVYavA90lFmrzwgy_42asKsJic9IIjFtL-RNk3NmUxjtLkEfQLO7Hpd85WySVqLLh9OQxsytThtidTn84dF84gks"/>
+<div class="absolute top-4 left-4 bg-secondary text-white px-3 py-1 rounded-full text-label-caps font-label-caps">BEST VALUE</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-body-md text-on-surface line-clamp-1">Noise Cancel Wireless Buds</h3>
+<div class="flex items-center text-secondary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-caps ml-1">4.8</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="font-price-lg text-price-lg text-primary">₩289,000</span>
+<span class="text-body-sm text-outline line-through">₩349,000</span>
+</div>
+<div class="p-3 bg-secondary/5 rounded-lg border border-secondary/10">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-secondary text-base">psychology</span>
+<span class="text-label-caps text-secondary">AI SENTIMENT</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">"Consistently rated #1 for comfort by professional reviewers."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Categories (Side Bento) -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">grid_view</span>
+                    Categories
+                </h2>
+<div class="grid grid-cols-2 gap-4 flex-grow">
+<div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-primary-container hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl mb-3 text-secondary group-hover:text-white">laptop_mac</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Tech</span>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-primary-container hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl mb-3 text-secondary group-hover:text-white">checkroom</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Fashion</span>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-primary-container hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl mb-3 text-secondary group-hover:text-white">home_mini</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Living</span>
+</div>
+<div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-primary-container hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl mb-3 text-secondary group-hover:text-white">fitness_center</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Sport</span>
+</div>
+</div>
+<!-- Mini Analysis Card -->
+<div class="bg-primary-container text-on-primary-container rounded-xl p-6 relative overflow-hidden shadow-lg group">
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[120px]">insights</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Price History</h3>
+<p class="text-body-sm opacity-80 mb-4">Track 30-day trends and buy at the absolute minimum price with AI Alerts.</p>
+<button class="bg-white text-primary px-4 py-2 rounded-lg font-bold text-body-sm">View Analytics</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-2 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-label-caps text-label-caps">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span class="font-label-caps text-label-caps">Comparison</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-label-caps">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-caps text-label-caps">Reports</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for search focus
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = searchInput.parentElement;
+
+        searchInput.addEventListener('focus', () => {
+            searchContainer.style.transform = 'scale(1.02)';
+            searchContainer.style.transition = 'transform 0.3s ease';
+        });
+
+        searchInput.addEventListener('blur', () => {
+            searchContainer.style.transform = 'scale(1)';
+        });
+    </script>
+</body></html>
