@@ -1,0 +1,14 @@
+{
+  "name": "smart-shopper-fo",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "dompurify": "^3.0.0",
+    "@types/dompurify": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

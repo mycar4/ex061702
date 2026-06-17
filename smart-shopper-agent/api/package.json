@@ -1,0 +1,12 @@
+{
+  "name": "smart-shopper-api",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@langchain/langgraph": "^0.2.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
