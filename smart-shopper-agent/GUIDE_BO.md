@@ -254,3 +254,85 @@ npm run dev        # → 별도 포트에서 실행
 > 현재 BO는 초기 스캐폴딩 단계입니다.  
 > 페이지 컴포넌트의 뼈대만 존재하며, 실제 API 연동과 UI 구현은 추후 진행됩니다.  
 > FO의 Vite 설정과 디자인 시스템을 공유할지, 완전히 분리할지는 프로젝트 규모에 따라 결정합니다.
+
+---
+
+## 9. Supabase 백오피스 데이터 연동 표준 (Admin DB)
+
+백오피스는 어드민 정책 관리와 모니터링 로그를 위해 Supabase 데이터베이스와 긴밀하게 데이터를 주고받아야 합니다. 아래는 어드민용 API 연동 및 테이블 핸들링 패턴 정의입니다.
+
+### 9-1. 관리용 Supabase 테이블 스키마 설계 기준
+백오피스 관제 및 영속성을 위해 Supabase DB에 아래 3개 테이블이 생성 및 사용됩니다.
+1. **`prompts`**: LLM 시스템 프롬프트 이력 및 활성 상태 관리
+2. **`scraping_logs`**: 크롤러 실행 속도, 성공 여부, 차단 여부 로그
+3. **`admin_settings`**: 쇼핑 에이전트의 전체 동작 정책 밸류 저장
+
+### 9-2. 어드민용 DB 쿼리 패턴 (Express API 레벨)
+백엔드 API 서버(`api/src/server.ts`) 내에서 Supabase SDK 또는 Connection Pool을 사용하여 데이터를 관리합니다.
+
+```typescript
+// 예시: 활성 프롬프트 템플릿 변경 API
+import { Pool } from 'pg';
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+server.put('/api/admin/prompt/template', adminAuth, async (req, res) => {
+  const { systemPrompt, updatedBy } = req.body;
+  
+  const query = `
+    INSERT INTO prompts (template_text, updated_by, is_active, created_at)
+    VALUES ($1, $2, true, NOW())
+    RETURNING id;
+  `;
+  
+  try {
+    // 1. 이전 활성 프롬프트 비활성화
+    await pool.query("UPDATE prompts SET is_active = false WHERE is_active = true");
+    // 2. 신규 프롬프트 활성 상태 등록
+    const result = await pool.query(query, [systemPrompt, updatedBy]);
+    
+    res.json({ success: true, promptId: result.rows[0].id });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+```
+
+### 9-3. 실시간 관제 연동 패턴 (프론트엔드 - REST + SSE)
+관제 페이지(`ScrapingControl.tsx`) 등에서 최근 크롤러 성공/차단률을 모니터링할 때, 주기적 폴링(Polling) 혹은 Supabase의 **Realtime Subscription** 기능을 활용합니다.
+
+```tsx
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient'; // FO/BO 공용 supabaseClient 참조
+
+export function useScrapingRealtimeLogs() {
+  const [logs, setLogs] = useState<any[]>([]);
+
+  useEffect(() => {
+    // 1. 초기 20개 최근 로그 조회
+    supabase
+      .from('scraping_logs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(20)
+      .then(({ data }) => { if (data) setLogs(data); });
+
+    // 2. 신규 로그 생성 실시간 구독 리스너 등록
+    const subscription = supabase
+      .channel('realtime_scraping_logs')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'scraping_logs' }, (payload) => {
+        setLogs(prev => [payload.new, ...prev.slice(0, 19)]);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, []);
+
+  return logs;
+}
+```
+
+### 9-4. BO DB 관리 보안 규칙
+1. **Row Level Security (RLS) 활성화**: Supabase DB 콘솔에서 모든 관리자용 테이블에 RLS를 활성화하고, 관리자 이메일 도메인(`@company.com`)을 가진 유저만 읽기/쓰기가 가능하도록 보안 정책을 지정합니다.
+2. **이력 보존(Audit Trail)**: 프롬프트 템플릿 변경이나 시스템 제어 정책 변경 등의 모든 쓰기(`INSERT`, `UPDATE`) 작업은 반드시 수정한 관리자의 식별값(`updated_by`)과 시간을 테이블에 영구 보관합니다.

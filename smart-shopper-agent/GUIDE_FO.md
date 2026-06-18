@@ -380,3 +380,99 @@ npm run build
 | 외부 링크 클릭 시 인증 페이지 표시 | 리퍼러 유출 | `rel="noopener noreferrer"` + `referrerPolicy="no-referrer"` |
 | 마크다운 링크가 현재 탭에서 열림 | DOMPurify가 `target` 속성 삭제 | `ADD_ATTR: ['target', 'rel', 'referrerpolicy']` |
 | API 호출 시 CORS 에러 | 프록시 미설정 | `vite.config.ts`의 `server.proxy` 확인 |
+
+---
+
+## 12. Supabase Auth (인증) 연동 및 환경 변수 가이드
+
+프론트엔드 단에서 사용자 가입, 로그인 상태 관리, 소셜(OAuth) 로그인 처리를 안전하게 처리하기 위한 표준 가이드라인입니다.
+
+### 12-1. 패키지 의존성 및 초기화
+Supabase 퍼블릭 API 클라이언트 라이브러리를 사용하며, 프론트엔드에서는 절대 `service_role` 키를 사용해서는 안 됩니다. (오직 `anon_key`만 사용 가능)
+
+```typescript
+// src/lib/supabaseClient.ts
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn("[Supabase] 환경 변수가 누락되었습니다. 로그인 기능을 사용할 수 없습니다.");
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+```
+
+### 12-2. OAuth (Google) 로그인 구현 패턴
+소셜 로그인 성공 후, 기존 세션 페이지 또는 지정된 콜백 도메인으로 매끄럽게 리다이렉트하도록 설정합니다.
+
+```tsx
+import { supabase } from '@/lib/supabaseClient';
+
+const handleGoogleSignIn = async () => {
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // 배포 환경과 로컬 호스트를 모두 지원하도록 window.location.origin 자동 파싱
+        redirectTo: `${window.location.origin}/`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account'
+        }
+      }
+    });
+    
+    if (error) throw error;
+  } catch (error: any) {
+    console.error('[Auth] 구글 로그인 요청 오류:', error.message || error);
+    alert('구글 로그인에 실패했습니다. 다시 시도해 주세요.');
+  }
+};
+```
+
+### 12-3. 사용자 인증 상태 변경 감지 (State Subscription)
+App 레벨이나 전역 Context에서 사용자의 로그인 상태를 실시간 감지하여 UI를 동적으로 바인딩합니다.
+
+```tsx
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+import { User } from '@supabase/supabase-js';
+
+export function useAuth() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // 1. 현재 액티브 세션 확인
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    // 2. 인증 상태 변경 감지 리스너 등록
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    // 3. 컴포넌트 언마운트 시 리스너 해제
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+  };
+
+  return { user, loading, handleSignOut };
+}
+```
+
+### 12-4. 배포 시 Vercel 환경 변수 명세
+Vercel 배포 시, Settings > Environment Variables 항목에 아래 정보를 반드시 등록하십시오.
+* **`VITE_SUPABASE_URL`**: Supabase Project URL (`https://xxx.supabase.co`)
+* **`VITE_SUPABASE_ANON_KEY`**: Supabase anon public API Key (클라이언트 브라우저 노출 가능)
+* **`VITE_API_URL`**: Render.com에 배포된 백엔드 API 서버 URL (SSE 스트리밍 엔드포인트 수신용)

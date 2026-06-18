@@ -393,3 +393,88 @@ Vercel은 환경 변수 등록 후, 변수를 브라우저 코드에 주입하�
 Deployments 탭 ➔ 최신 빌드 옵션 ➔ Redeploy 실행
 
 ⚠️ 주의: 팝업창에서 Use Existing Build Cache 옵션을 반드시 해제해야 이전 도메인으로 쏘는 캐시 버그(404 Not Found)를 막을 수 있습니다.
+
+---
+
+## 13. Supabase DB 및 LangGraph Saver 연동 가이드
+
+에이전트의 영속성(Persistence) 확보와 멀티 세션 관리를 위해 Supabase의 PostgreSQL 데이터베이스를 연동하는 표준 아키텍처 가이드입니다.
+
+### 13-1. Supabase 연동 기술 스택
+- **Database**: PostgreSQL (Supabase Cloud)
+- **Driver**: `pg` 및 `@types/pg`
+- **LangGraph Checkpointer**: `@langchain/langgraph-checkpoint-postgres`
+
+### 13-2. LangGraph PostgresSaver 초기화 및 워크플로우 등록 패턴
+데이터베이스 연결을 안전하게 초기화하고 에이전트의 대화 히스토리 및 이전 상태(State) 정보를 영구 관리합니다.
+
+```typescript
+import { Pool } from 'pg';
+import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres';
+import { workflow } from './workflow';
+
+// 1. Connection Pool 구성 (환경변수 DATABASE_URL 연동)
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.warn("[Database] DATABASE_URL이 지정되지 않았습니다. 인메모리 세이버로 대체하거나 API 에러가 발생할 수 있습니다.");
+}
+
+const pool = new Pool({
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false // Supabase SSL 통신 필수 옵션
+  }
+});
+
+// 2. PostgresSaver 인스턴스 생성
+const checkpointer = new PostgresSaver(pool);
+
+// 3. 최초 서버 구동 시 백업에 필요한 DB 테이블 자동 생성
+// (Express 기동 또는 에이전트 서비스 로드 시 1회 비동기 실행 필요)
+export async function initializeDatabase() {
+  try {
+    await checkpointer.setup();
+    console.log("[Database] Supabase PostgreSQL Checkpointer 테이블 준비 완료.");
+  } catch (error) {
+    console.error("[Database] 데이터베이스 초기화 실패:", error);
+  }
+}
+
+// 4. 워크플로우 컴파일 시 checkpointer 등록
+export const app = workflow.compile({
+  checkpointer: checkpointer
+});
+```
+
+### 13-3. 세션별 대화 관리 및 호출 패턴
+API 엔드포인트에서 각 요청을 구분하기 위해 `configurable.thread_id` 옵션을 실어 호출합니다.
+
+```typescript
+// Express 라우터 예시
+server.get('/api/recommend/stream', async (req, res) => {
+  const query = req.query.q as string || '';
+  const sessionId = req.headers['x-session-id'] as string || 'default-session';
+
+  // ... SSE header 설정 생략 ...
+
+  try {
+    // thread_id를 전달하여 해당 사용자의 이전 대화 맥락 복구 및 현재 상태 자동 보존
+    const config = {
+      configurable: {
+        thread_id: sessionId
+      }
+    };
+
+    const resultState = await app.invoke({ userQuery: query }, config);
+    // ... 데이터 스트리밍 처리 ...
+  } catch (error) {
+    // ... 에러 처리 ...
+  }
+});
+```
+
+### 13-4. 보안 및 백엔드 설정 규칙
+1. **Connection String 은닉**: `DATABASE_URL` 정보는 절대 코드나 Public GitHub 저장소에 하드코딩해서는 안 됩니다.
+2. **IP Whitelisting / SSL**: Supabase와 Render 통신 시 반드시 SSL(`ssl: { rejectUnauthorized: false }`) 설정을 명시해야 접속 거부를 막을 수 있습니다.
+3. **Connection Pool 관리**: 서버 재기동 시 컨넥션 누수를 막기 위해 싱글톤 패턴으로 pool 인스턴스를 유지 관리하십시오.
