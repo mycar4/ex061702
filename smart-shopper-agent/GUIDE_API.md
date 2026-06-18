@@ -214,38 +214,26 @@ GET /api/recommend/stream?q={검색어}
   { "type": "error", "message": "..." }        # 에러 메시지
 ```
 
-### 5-2. SSE 서버 구현 패턴
+### 5-2. SSE (Server-Sent Events) 스트리밍 패턴
 
-```typescript
-server.get('/api/recommend/stream', async (req, res) => {
-  const query = req.query.q as string || '';
+검색 결과 페이지의 실시간 데이터 수신에 사용합니다. **절대 API 주소를 하드코딩하거나 상대 경로(`/api/...`)만 단독으로 사용하지 않습니다.**
 
-  // 1. SSE 헤더 설정
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-  });
+```tsx
+// 환경 변수 최우선 참조 + 로컬/운영 백업 도메인 다이내믹 바인딩
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (window.location.hostname === 'localhost' 
+    ? 'http://localhost:3001' 
+    : '[https://smart-shopper-api.onrender.com](https://smart-shopper-api.onrender.com)');
 
-  try {
-    // 2. LangGraph 워크플로우 실행
-    const resultState = await app.invoke({ userQuery: query, ... });
+useEffect(() => {
+  if (!query) return;
+  setIsStreaming(true);
 
-    // 3. 상품 데이터 전송
-    res.write(`data: ${JSON.stringify({ type: 'products', products: resultState.products })}\n\n`);
-
-    // 4. 리포트를 라인 단위로 스트리밍
-    const lines = resultState.report.split('\n');
-    for (const line of lines) {
-      res.write(`data: ${JSON.stringify({ type: 'report', text: line })}\n\n`);
-      await new Promise(r => setTimeout(r, 30));  // 체감 스트리밍 딜레이
-    }
-  } catch (error: any) {
-    res.write(`data: ${JSON.stringify({ type: 'error', message: error.message })}\n\n`);
-  } finally {
-    res.end();
-  }
-});
+  // 슬래시(/) 중복 방지를 위한 URL 정규화 후 연결
+  const cleanBaseUrl = API_BASE_URL.replace(/\/$/, '');
+  const eventSource = new EventSource(
+    `${cleanBaseUrl}/api/recommend/stream?q=${encodeURIComponent(query)}`
+  );
 ```
 
 ---
@@ -357,3 +345,51 @@ npm run dev        # → tsx watch src/server.ts → http://localhost:3001
 # 워크플로우 단독 테스트
 npx tsx src/test_workflow.ts
 ```
+
+## 11. Render.com 백엔드 배포 및 트러블슈팅 가이드
+
+API 서버를 Render.com에 배포할 때 발생하는 TypeScript 환경 충돌을 방지하기 위한 표준 세팅입니다.
+
+### 11-1. Render Web Service 설정 명세
+| 설정 항목 | 입력 값 | 비고 |
+|---|---|---|
+| **Runtime** | `Node` | Python 캐시 락 발생 시 서비스 삭제 후 Node로 재생성 |
+| **Root Directory** | `smart-shopper-agent/api` | 백엔드 폴더 명시 |
+| **Build Command** | `npm install && npx tsc` | 타입스크립트 컴파일 |
+| **Start Command** | `node src/server.js` | Root Directory 기준 상대 경로 실행 |
+
+### 11-2. TypeScript 컴파일러 충돌 방지 (`tsconfig.json`)
+Render의 `tsc --init` 자동 생성 설정과 로컬 모듈 시스템이 충돌하여 도움말만 출력되고 빌드가 중단되는(`TS5052` 등) 현상을 막기 위해, `api/` 루트에 아래의 완화된 설정 파일을 고정적으로 유지합니다.
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "exactOptionalPropertyTypes": false,
+    "verbatimModuleSyntax": false
+  },
+  "include": ["src/**/*"]
+}
+
+### 12. Vercel 배포 및 환경 변수 가이드
+프론트엔드 앱을 Vercel에 배포할 때 백엔드와의 통신을 연결하는 표준 절차입니다.
+
+12-1. 환경 변수 등록
+Vercel 대시보드 Settings > Environment Variables에 Render 백엔드 주소를 등록합니다.
+
+Key: VITE_API_URL
+
+Value: https://smart-shopper-api.onrender.com (끝에 슬래시 제외)
+
+12-2. 배포 캐시 초기화 (Redeploy)
+Vercel은 환경 변수 등록 후, 변수를 브라우저 코드에 주입하기 위해 반드시 재배포가 필요합니다.
+
+Deployments 탭 ➔ 최신 빌드 옵션 ➔ Redeploy 실행
+
+⚠️ 주의: 팝업창에서 Use Existing Build Cache 옵션을 반드시 해제해야 이전 도메인으로 쏘는 캐시 버그(404 Not Found)를 막을 수 있습니다.

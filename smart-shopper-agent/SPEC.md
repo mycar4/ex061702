@@ -44,3 +44,9 @@
 
 ### 다. 개발 환경
 - 프론트엔드는 최신 React 19+ 기반 Hook 패턴 및 스트리밍 응답 렌더링을 지원합니다.
+
+
+### 라. 인프라 아키텍처 및 배포 환경 (Infrastructure & Deployment)
+- **Front Office (FO):** Vercel 배포 (React 19, Vite 기반 정적 호스팅 및 자동 CI/CD 적용)
+- **Backend API (API):** Render.com 배포 (Node.js Web Service 컨테이너, TypeScript 런타임)
+- **통신 보안:** 프론트엔드와 백엔드는 HTTPS 기반으로 통신하며, API 주소는 하드코딩을 배제하고 환경 변수(`VITE_API_URL`)를 통해 런타임에 동적으로 주입됩니다.

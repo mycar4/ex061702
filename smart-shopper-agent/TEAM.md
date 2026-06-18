@@ -5,6 +5,8 @@
 ---
 
 ## 1. 조직도 및 역할 정의 (R&R)
+- **👤 개발 Gem (Senior System Developer Agent)**의 핵심 책무 항목에 아래 내용 추가.
+- **인프라 파이프라인 구축:** 프론트엔드(Vercel)와 백엔드 API(Render.com) 간의 분리형 아키텍처 배포를 수행하고, 환경 변수 바인딩 및 TypeScript/CORS 관련 인프라 트러블슈팅을 전담합니다.
 
 ### 👤 PM Gem (Product Manager Agent)
 - **인간 파트너:** 서비스 총괄 리드
