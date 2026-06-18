@@ -3,8 +3,10 @@ import { Slot } from "@radix-ui/react-slot"
 import { cn } from "../../lib/utils"
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  asChild?: boolean
+  variant?: 'primary' | 'secondary' | string; // variant 속성 추가!
 }
+
+
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, asChild = false, ...props }, ref) => {
