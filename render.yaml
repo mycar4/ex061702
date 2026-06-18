@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ex061702
+    runtime: node              # 👈 여기서 파이썬을 Node.js로 강제 전환합니다!
+    repo: https://github.com/mycar4/ex061702
+    plan: free
+    rootDir: smart-shopper-agent/api
+    buildCommand: npm install && npx tsc
+    startCommand: node src/server.js
