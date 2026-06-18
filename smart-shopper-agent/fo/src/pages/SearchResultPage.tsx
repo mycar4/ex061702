@@ -10,6 +10,9 @@ interface Product {
   rawReviewText?: string;
 }
 
+// 🟢 [시니어 엔진 교정] Vercel 환경 변수를 감지하고, 없을 경우 안전하게 Render 실배포 주소로 백업 연결
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ex061702.onrender.com';
+
 const SearchResultPage: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -34,7 +37,9 @@ const SearchResultPage: React.FC = () => {
       setLoadingStep(prev => (prev < 2 ? prev + 1 : prev));
     }, 1500);
 
-    const eventSource = new EventSource(`/api/recommend/stream?q=${encodeURIComponent(query)}`);
+    // 🛠️ [최종 조준 정밀 사격] 절대 경로 대신 Render API 베이스 도메인을 명확하게 명시함
+    const cleanBaseUrl = API_BASE_URL.replace(/\/$/, ''); // 혹시 모를 주소 뒤의 슬래시(/) 중복 제거
+    const eventSource = new EventSource(`${cleanBaseUrl}/api/recommend/stream?q=${encodeURIComponent(query)}`);
 
     let accumulatedReport = '';
 
