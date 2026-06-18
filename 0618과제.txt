@@ -1,0 +1,61 @@
+RSS(Really Simple Syndication 또는 Rich Site Summary)는 뉴스, 블로그 등 업데이트가 잦은 웹사이트에서 제공하는 최신 콘텐츠 알림 및 배급 포맷 
+
+
+기획 발표
+
+발표 문서 설명
+1팀 - 오락실(각각 게임 4개)
+2팀 - 
+	3팀 - 이력서 코칭 사이트
+	4팀 - 미정 ?
+	5팀 - 부동산 경매 교육 멀티 에이전트
+	6팀 - 프로젝트 관리 
+
+어제 Agent 실습 검토
+	1. 뉴스 요약 및 분석 에이전트  (1~3팀)
+	2. 쇼핑 도우미 에이전트 (4~6팀)
+
+Agent 실습 과제
+
+1) 개인 일정 관리 AI 에이전트 (Personal Assistant Agent) [1~3팀]
+
+주요 기능
+일정 등록 
+일정 조회 
+일정 변경 
+중요한 일정 알림 
+우선순위 추천 
+
+사용 기술
+Python 
+Google Calendar API 
+Gemini API 또는 OpenAI Platform
+SQLite 
+
+예시)
+사용자: 다음 주 화요일 오후 2시에 회의 등록해줘.
+에이전트: 일정을 등록했습니다.
+
+- 제목: 회의
+- 날짜: 2026-06-23
+- 시간: 오후 2시
+
+
+2) 코드 리뷰 AI 에이전트 [4~6팀]
+주요 기능
+코드 분석 
+버그 탐지 
+성능 개선 
+리팩토링 제안 
+테스트 코드 생성 
+
+사용 기술
+Python 
+GitHub API 
+LLM API 
+Docker 
+
+예시)
+for i in range(len(arr)):
+↓
+enumerate 사용을 권장합니다.
