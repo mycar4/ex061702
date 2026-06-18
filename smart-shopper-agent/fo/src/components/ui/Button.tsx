@@ -1,29 +1,30 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cn } from "../../lib/utils"
+import React from 'react';
 
+// 1. ButtonProps 인터페이스에 variant 속성 명시적 추가
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | string; // variant 속성 추가!
+  variant?: 'primary' | 'secondary' | string; // variant 허용
 }
 
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  type = "button",
+  variant = "primary", // 기본값 설정
+  className = "",
+  ...props
+}) => {
+  // DESIGN_SYSTEM.md 토큰을 반영한 스타일 분기 (예시)
+  const baseStyle = "transition-all duration-200 active:scale-95";
+  const variantStyle = variant === 'primary' 
+    ? "bg-[var(--stitch-color-primary,#1a146b)] text-white" 
+    : "bg-transparent text-[var(--stitch-text-primary,#0d1c2e)]";
 
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
-    return (
-      <Comp
-        className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          "bg-primary text-on-primary hover:bg-primary/90 h-10 px-4 py-2",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    )
-  }
-)
-Button.displayName = "Button"
-
-export { Button }
+  return (
+    <button
+      type={type}
+      className={`${baseStyle} ${variantStyle} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
