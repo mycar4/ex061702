@@ -88,7 +88,11 @@ const TopAppBar: React.FC = () => {
                   </div>
                 </div>
                 <DialogFooter className="flex-col sm:flex-col gap-2">
-                  <Button type="submit" className="w-full">이메일로 계속하기</Button>
+                  {/* 1차 확인: 이메일 버튼 (기본형 스타일링 유지) */}
+                  <Button type="submit" className="w-full bg-[var(--stitch-color-primary,#1a146b)] text-white py-2 rounded-md hover:bg-opacity-90">
+                    이메일로 계속하기
+                  </Button>
+                  
                   <div className="relative my-2">
                     <div className="absolute inset-0 flex items-center">
                       <span className="w-full border-t border-outline-variant/30" />
@@ -98,10 +102,10 @@ const TopAppBar: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* 🛠️ [교정 완료] 타입 에러를 유발하는 variant 속성을 제거하고 className 스타일로 흡수 */}
+                  {/* 🛠️ 2차 교정 (100-111번째 라인): variant="outline" 속성을 완전히 제거하고 정적 스타일로 처리 */}
                   <Button 
                     type="button" 
-                    className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100 flex items-center justify-center gap-2 transition-colors duration-150"
+                    className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100 flex items-center justify-center gap-2 py-2 rounded-md transition-colors duration-150"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24">
                       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
