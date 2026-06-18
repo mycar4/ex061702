@@ -478,3 +478,53 @@ server.get('/api/recommend/stream', async (req, res) => {
 1. **Connection String 은닉**: `DATABASE_URL` 정보는 절대 코드나 Public GitHub 저장소에 하드코딩해서는 안 됩니다.
 2. **IP Whitelisting / SSL**: Supabase와 Render 통신 시 반드시 SSL(`ssl: { rejectUnauthorized: false }`) 설정을 명시해야 접속 거부를 막을 수 있습니다.
 3. **Connection Pool 관리**: 서버 재기동 시 컨넥션 누수를 막기 위해 싱글톤 패턴으로 pool 인스턴스를 유지 관리하십시오.
+
+## 14. LangSmith AI 관제 및 모니터링 (Observability)
+
+LangGraph 에이전트의 사고 과정, LLM 프롬프트, 소모 토큰을 추적하고 사용자 피드백을 수집하기 위한 표준 세팅입니다.
+
+### 14-1. 환경 변수 세팅 (필수)
+Render 대시보드 환경 변수에 아래 값을 주입하면 코드 수정 없이 백그라운드 추적이 시작됩니다.
+```env
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=lsv2_... (발급받은 키)
+LANGCHAIN_PROJECT=SmartShopper-Prod
+
+### 14-2. 식별자(Metadata) 및 Run ID 동적 주입
+랭스미스에 쌓인 수많은 로그 중 특정 에러나 피드백을 쉽게 추적하기 위해, server.ts에서 워크플로우 실행 시 태그와 메타데이터를 명시적으로 주입합니다.
+
+// src/server.ts (LangGraph invoke 실행부)
+import crypto from 'crypto';
+
+// FO로 전달하여 피드백 연결 고리로 사용할 고유 ID
+const runId = crypto.randomUUID(); 
+
+const resultState = await app.invoke(
+  { userQuery: query },
+  {
+    tags: ["prod-v1.0", "search-intent"],
+    metadata: { client: "web-fo" },
+    runId: runId // 명시적 ID 부여
+  }
+);
+
+### 14-3. 사용자 피드백 수집 엔드포인트
+프론트엔드에서 전송한 '좋아요/싫어요' 데이터를 랭스미스의 해당 Trace 로그에 직접 기록합니다.
+
+// src/server.ts (라우터 추가)
+import { Client } from "langsmith";
+const langsmithClient = new Client();
+
+server.post('/api/feedback', async (req, res) => {
+  const { runId, score } = req.body; // score: 1 (좋음) or 0 (나쁨)
+  
+  try {
+    // 랭스미스의 해당 runId 로그에 점수 기록
+    await langsmithClient.createFeedback(runId, "user_score", { score });
+    res.status(200).send({ status: 'ok' });
+  } catch (e) {
+    console.error('LangSmith Feedback Error:', e);
+    res.status(500).send({ error: 'Feedback record failed' });
+  }
+});
+

@@ -476,3 +476,38 @@ Vercel 배포 시, Settings > Environment Variables 항목에 아래 정보를 �
 * **`VITE_SUPABASE_URL`**: Supabase Project URL (`https://xxx.supabase.co`)
 * **`VITE_SUPABASE_ANON_KEY`**: Supabase anon public API Key (클라이언트 브라우저 노출 가능)
 * **`VITE_API_URL`**: Render.com에 배포된 백엔드 API 서버 URL (SSE 스트리밍 엔드포인트 수신용)
+
+## 13. AI 리포트 품질 피드백 연동 (LangSmith)
+
+생성된 AI 추천 리포트의 품질을 모니터링하기 위해 백엔드의 LangSmith 파이프라인과 연동하는 피드백 루프입니다.
+
+### 13-1. 보안 주의사항
+> [!CAUTION]  
+> 프론트엔드 소스코드에는 **절대로** LangSmith API Key나 `@langchain/core` 로깅 관련 SDK를 포함해서는 안 됩니다. 랭스미스와의 통신은 100% 백엔드 API를 경유하여(Proxy) 처리합니다.
+
+### 13-2. 피드백 전송 핸들러 구현
+리포트 스트리밍 완료 후, 백엔드로부터 전달받은 `runId`를 기반으로 사용자의 평가를 백엔드로 전송합니다.
+
+```tsx
+// src/pages/SearchResultPage.tsx 내 피드백 핸들러 예시
+
+const handleFeedback = async (runId: string, isPositive: boolean) => {
+  try {
+    const cleanBaseUrl = API_BASE_URL.replace(/\/$/, '');
+    await fetch(`${cleanBaseUrl}/api/feedback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        runId: runId,
+        score: isPositive ? 1 : 0 // 1: 좋아요, 0: 싫어요
+      })
+    });
+    alert('AI 엔진 개선을 위한 피드백이 반영되었습니다. 감사합니다!');
+  } catch (error) {
+    console.error('피드백 전송 실패:', error);
+  }
+};
+
+// UI 렌더링 부 (리포트 하단)
+// <button onClick={() => handleFeedback(currentRunId, true)}>👍 유용해요</button>
+// <button onClick={() => handleFeedback(currentRunId, false)}>👎 아쉬워요</button>
