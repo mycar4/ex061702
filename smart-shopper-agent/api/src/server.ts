@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 import { app } from './agents/workflow';
 
 // .env 파일 로드 (Gemini API Key 획득용)
@@ -15,8 +17,49 @@ server.use(express.json());
 // 정적 HTML 디자인 리소스 폴더 제공
 server.use(express.static(path.resolve(__dirname, '../../designs')));
 
+// Swagger 설정
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Smart Shopper AI API',
+      version: '1.0.0',
+      description: 'Smart Shopper AI 에이전트의 백엔드 API 문서',
+    },
+    servers: [
+      {
+        url: `http://localhost:${process.env.PORT || 3001}`,
+        description: '로컬 개발 서버',
+      },
+    ],
+  },
+  apis: ['./src/server.ts'], // 현재 파일의 주석을 파싱
+};
 
-// GET /api/recommend/stream?q=...
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * @openapi
+ * /api/recommend/stream:
+ *   get:
+ *     summary: 상품 추천 및 리포트 스트리밍
+ *     description: 사용자 쿼리에 기반하여 관련 상품을 RAG로 검색하고, Gemini LLM을 통해 추천 리포트를 Server-Sent Events(SSE)로 실시간 스트리밍합니다.
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: 검색어 (예. 고성능 노트북, 나무의자)
+ *     responses:
+ *       200:
+ *         description: SSE 스트림 응답. type이 'products', 'report', 'error'인 JSON 포맷의 데이터 반환.
+ *         content:
+ *           text/event-stream:
+ *             schema:
+ *               type: string
+ */
 server.get('/api/recommend/stream', async (req, res) => {
   const query = req.query.q as string || '';
 
